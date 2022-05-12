@@ -12,7 +12,7 @@ const MyUploader = ()=> {
     // receives array of files that are done uploading when submit button is clicked
     const handleSubmit = (files, allFiles) => {
       console.log(files.map(f => f.meta))
-      // allFiles.forEach(f => f.remove())
+      allFiles.forEach(f => f.remove())
     }
   
     return (
@@ -20,7 +20,6 @@ const MyUploader = ()=> {
       getUploadParams={getUploadParams}
       onChangeStatus={handleChangeStatus}
       onSubmit={handleSubmit}
-      submitButtonDisabled={false}
       accept=".doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,.pdf,.txt"
       inputContent={(files, extra) => (extra.reject ? 'PDF, TXT or word docs only' : 'Drag or upload Files')}
       maxFiles={1}
