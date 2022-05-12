@@ -1,5 +1,5 @@
 import {React,useState} from 'react'
-import {Modal,Button,input} from 'react-bootstrap'
+import {Modal,Button} from 'react-bootstrap'
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import MyDropzone from './uploader';
@@ -19,7 +19,7 @@ export default function Example() {
           <Modal.Header closeButton>
             <Modal.Title>Upload Files</Modal.Title>
           </Modal.Header>
-          <Modal.Body>Please Upload or Drag and drop The files</Modal.Body>
+          <Modal.Body>Get ESG Analysis on your file</Modal.Body>
           <Modal.Body>
           <MyDropzone/>
 
