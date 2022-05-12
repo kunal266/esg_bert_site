@@ -1,36 +1,51 @@
-import 'react-dropzone-uploader/dist/styles.css'
-import Dropzone from 'react-dropzone-uploader'
+import React, { useState } from 'react';
+import Upload from 'rc-upload';
+import {ProgressBar} from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-const MyUploader = ()=> {
-  
-    // specify upload params and url for your files
-    const getUploadParams = ({ meta }) => { return { url: 'https://eoy6w69i3hezn7f.m.pipedream.net' } }
-    
-    // called every time a file's `status` changes
-    const handleChangeStatus = ({ meta, file }, status) => { console.log(status, meta) }
-    
-    // receives array of files that are done uploading when submit button is clicked
-    const handleSubmit = (files, allFiles) => {
-      console.log(files.map(f => f.meta))
-      allFiles.forEach(f => f.remove())
-    }
-  
-    return (
-      <Dropzone 
-      getUploadParams={getUploadParams}
-      onChangeStatus={handleChangeStatus}
-      onSubmit={handleSubmit}
-      accept=".doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,.pdf,.txt"
-      inputContent={(files, extra) => (extra.reject ? 'PDF, TXT or word docs only' : 'Drag or upload Files')}
-      maxFiles={1}
-      styles={{
-        dropzoneReject: { borderColor: 'red', backgroundColor: '#DAA' },
-        inputLabel: (files, extra) => (extra.reject ? { color: 'red' } : {}),
 
+const MyDropzone = () => {
+  const [nowprog,setnowprog] = useState(0);
+  const [progshow,setprogshow] = useState(false);
+  const props = {
+    action: 'https://httpbin.org/post',
+    type: 'drag',
+    accept: '.txt,.pdf,.docx,.doc',
+    beforeUpload(file) {
+      console.log('beforeUpload', file.name);
+    },
+    onStart: file => {
+      console.log('onStart', file.name);
+      setprogshow(true)
+    },
+    onSuccess(file) {
+      console.log('onSuccess', file);
+    },
+    onProgress(step, file) {
+      // console.log('onProgress', Math.round(step.percent), file.name);
+      setnowprog( Math.round(step.percent));
+      console.log("nowprog",nowprog);
+    },
+    onError(err) {
+      console.log('onError', err);
+    },
+    style: { display: 'inline-block', width:800, height: 600, background: '#fff' },
+    // openFileDialogOnClick: false
+  };
+  return (
+    <div
+      style={{
+        margin: 100,
       }}
-    />
-        )
-      }
-      
-      
-export default MyUploader;
+    >
+      {progshow?<div><ProgressBar now={nowprog} style={{width:600}}/></div>:null}
+      <div>
+        <Upload {...props}>
+          <a>Drag or Upload file</a>
+        </Upload>
+      </div>
+    </div>
+  );
+};
+
+export default MyDropzone;
